@@ -16,6 +16,9 @@ const registerschema= new mongoose.Schema({
     score:{
         type:Array,
         
+    },
+    last_score:{
+        type:Number,
     }
     
 })

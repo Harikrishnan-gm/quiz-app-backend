@@ -21,15 +21,22 @@ exports.registeruser= async (req,res) =>{
 
 } 
 exports.login=async(req,res)=>{
-    const {email,password} = req.body
+    const {email,password,score} = req.body
     try{
         const details= await register.findOne({email})
         if(!details){
             res.status(403).json('Matching records not found')
         } 
         else{
-            const message="login success"
+            // console.log(details);
+            // console.log(score);
+            result="login success"
+            const array=details.score
+            array.push(score)
             res.status(200).json(details)
+
+            // save after push
+            details.save()
         }
     }
     catch(err){
@@ -39,7 +46,11 @@ exports.login=async(req,res)=>{
 }
 exports.Top=async(req,res)=>{
     try{
-        const details=await register.find().sort({score:-1})
+        // const details=await register.find({}).sort({Math(score)})
+        const details=await register.aggregate([
+            
+            {$sort:{"score":-1}}
+          ])
         res.status(200).json(details)
     }
     catch(err){
